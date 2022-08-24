@@ -48,6 +48,7 @@ if (updateDataForm) {
     updateSettings(form, 'data');
   });
 }
+
 if (updatePasswordForm) {
   updatePasswordForm.addEventListener('submit', async e => {
     e.preventDefault();
