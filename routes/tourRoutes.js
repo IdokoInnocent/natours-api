@@ -39,7 +39,7 @@ router
   ); //the first argument is the middleware. we want to check whether the body contails the price and name data
 
 router
-  .route('/:slug')
+  .route('/:id')
   .get(tourController.getTour)
   .patch(
     authController.protect,
