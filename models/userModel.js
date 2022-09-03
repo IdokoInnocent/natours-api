@@ -61,26 +61,26 @@ const userSchema = new mongoose.Schema({
   passwordResetExpires: Date
 });
 
-// // 1) PASSWORD MANAGEMENT. using document middleware to hash password when we create account.
-// userSchema.pre('save', async function(next) {
-//   // Only run this if password was modified
-//   if (!this.isModified('password')) return next();
+// 1) PASSWORD MANAGEMENT. using document middleware to hash password when we create account.
+userSchema.pre('save', async function(next) {
+  // Only run this if password was modified
+  if (!this.isModified('password')) return next();
 
-//   // Hash the password with cost of 12
-//   this.password = await bcrypt.hash(this.password, 12); //installed the bcrypt package: for hashing password
+  // Hash the password with cost of 12
+  this.password = await bcrypt.hash(this.password, 12); //installed the bcrypt package: for hashing password
 
-//   // Delete the confirmPassword field
-//   this.confirmPassword = undefined;
-//   next();
-// });
+  // Delete the confirmPassword field
+  this.confirmPassword = undefined;
+  next();
+});
 
-// ////// 2) Middleware: Using document middleware to update the passwordChangedAt properties
-// userSchema.pre('save', function(next) {
-//   if (!this.isModified('password') || this.isNew) next();
+////// 2) Middleware: Using document middleware to update the passwordChangedAt properties
+userSchema.pre('save', function(next) {
+  if (!this.isModified('password') || this.isNew) next();
 
-//   this.passwordChangedAt = Date.now() - 1000; // So the user will be able to log in with delay
-//   next();
-// });
+  this.passwordChangedAt = Date.now() - 1000; // So the user will be able to log in with delay
+  next();
+});
 
 // 3) query middleware. when we delete users. we only want to show users that are active in the getAllUsers route.
 userSchema.pre(/^find/, function(next) {
